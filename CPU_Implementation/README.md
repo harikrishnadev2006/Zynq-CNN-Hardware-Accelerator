@@ -1,11 +1,20 @@
-This folder contains the heart of our software-side work. Before we pushed the limits with FPGA hardware, we built this software-only version of the CNN to run on the ARM processor.
+# CPU Implementation
 
-In any serious engineering project, you need a "Ground Truth." This implementation isn't just a backup; it’s our benchmark. It allows us to see exactly how much faster—and more efficient—our final FPGA design is compared to a standard processor.
+This directory contains the software-only implementation of the CNN executed on the ARM processor. It serves as the baseline reference for evaluating the performance gains achieved through FPGA acceleration.
 
-We’ve kept things modular and clean:
+In any hardware acceleration project, a reliable ground-truth implementation is essential. This version provides a standard CPU execution profile against which improvements in speed, efficiency, and resource utilization can be measured.
 
-The Inference Logic: This is the core engine that handles the neural network's heavy lifting.
+## Components
 
-Preprocessing Routines: All the "prep work" (like resizing or normalizing data) happens here before the model takes over.
+### Inference Logic
+Implements the core neural network computation, including forward propagation through convolutional, activation, and pooling layers.
 
-Performance Tracking: We have implemented  timing scripts to measure latency and throughput. This gives us the hard numbers we need to prove our hardware acceleration actually works.
+### Preprocessing Routines
+Handles input preparation tasks such as resizing, normalization, and formatting of image data prior to inference.
+
+### Performance Tracking
+Includes timing mechanisms used to measure key metrics such as inference latency and throughput. These measurements establish the baseline required for quantitative comparison with the hardware-accelerated system.
+
+## Purpose
+
+The primary purpose of this module is benchmarking. It enables direct comparison between CPU-only execution and the FPGA-accelerated implementation, thereby demonstrating the effectiveness of the hardware/software co-design approach.
