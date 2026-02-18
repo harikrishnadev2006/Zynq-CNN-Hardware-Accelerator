@@ -1,40 +1,54 @@
 # Hardware-Accelerated CNN Inference on Xilinx Zynq SoC
 
 ## Overview
-This project implements a hardware-accelerated convolutional neural network (CNN) inference system on a Xilinx Zynq System-on-Chip using a hardware/software co-design approach. The ARM processing system performs image acquisition, preprocessing, and control, while the FPGA programmable logic accelerates computationally intensive CNN operations.
+This repository presents a high-performance implementation of a Convolutional Neural Network (CNN) leveraging the Xilinx Zynq System-on-Chip (SoC). By adopting a Hardware/Software (HW/SW) co-design methodology, workloads are distributed across the ARM Processing System (PS) and the FPGA Programmable Logic (PL) to maximize computational efficiency.
 
 ## Objective
-To achieve real-time or near real-time image classification by offloading convolution and pooling operations to FPGA fabric and to quantitatively demonstrate performance improvements over a CPU-only implementation.
+The primary goal is to achieve real-time image classification by offloading computationally intensive operations—specifically convolution and pooling—from the CPU to the FPGA fabric. This project serves as a quantitative proof-of-concept demonstrating performance improvements over a CPU-only implementation.
 
-## Platform
-- Xilinx Zynq-based development board
-- ARM Cortex-A9 Processing System (PS)
-- FPGA Programmable Logic (PL)
-- Vitis HLS and Vivado Design Suite
+## Platform & Tools
 
-## System Partitioning
-- **PS (ARM Core):** Image handling, preprocessing, control, and post-processing  
-- **PL (FPGA):** Convolution, activation, pooling, and parallel arithmetic operations  
+**Target Hardware:** Xilinx Zynq-7000 series development board  
+**Processing Core:** Dual-core ARM Cortex-A9 (PS)  
+**Acceleration Fabric:** FPGA Programmable Logic (PL)  
+
+**Design Tools:**
+- Xilinx Vitis HLS (High-Level Synthesis)
+- Vivado Design Suite
+
+## System Partitioning (HW/SW Split)
+
+To optimize system performance, functionality is divided as follows:
+
+### Processing System (PS) — ARM Core
+- Image acquisition  
+- Preprocessing  
+- System control and configuration  
+- Post-processing of inference results  
+
+### Programmable Logic (PL) — FPGA
+- Parallel computation of convolution layers  
+- Activation functions  
+- Pooling operations  
+- High-throughput arithmetic processing  
 
 ## Key Features
-- Lightweight CNN implementation
-- Hardware/software co-design
-- AXI-based PS–PL communication
-- Performance comparison with CPU-only execution
-- Resource-efficient FPGA implementation
 
-## Performance Goals
-- Reduced inference latency
-- Improved throughput
-- Lower power consumption
-- Efficient utilization of FPGA resources
+- Lightweight CNN architecture optimized for embedded deployment  
+- Hardware/software co-design implementation  
+- AXI4-based high-speed communication between PS and PL  
+- Efficient utilization of DSP slices and BRAM resources  
+- Support for benchmarking against CPU-only execution  
 
-## Repository Structure
-- CPU-only software implementation
-- FPGA accelerator design files
-- Hardware/software integration components
-- Experimental results
-- Final project documentation
+## Performance Benchmarks
+
+The system targets improvements across four primary metrics:
+
+- **Latency Reduction:** Lower inference time per frame  
+- **Throughput Enhancement:** Higher frames per second (FPS)  
+- **Power Optimization:** Reduced energy consumption per inference  
+- **Hardware Utilization:** Balanced use of FPGA resources for optimal performance  
 
 ## Outcome
-The project demonstrates the effectiveness of heterogeneous computing on embedded platforms for accelerating edge AI workloads.
+
+This project demonstrates the effectiveness of heterogeneous computing for edge AI applications. By offloading intensive workloads to specialized hardware, the system achieves significantly higher efficiency than traditional CPU-only architectures while maintaining real-time capability.
