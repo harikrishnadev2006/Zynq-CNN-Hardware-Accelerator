@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <xparameters.h>
+#include <xiltimer.h> 
+#include <xconv_accel.h>  // This header is created by Vitis after you export hardware
+#include "dataset.h"
+
+// Device ID from xparameters.h
+#define DEVICE_ID XPAR_XCONV_ACCEL_0_BASEADDR 
+
+XConv_accel accel_dev;
+XConv_accel_Config *accel_config;
+
+/* --- Memory Buffers --- */
+// We still need these to hold the final results in DDR
+static float hw_output[16][6][6]; 
+
+int init_accelerator() {
+    // 1. Look up the hardware configuration
+    accel_config = XConv_accel_LookupConfig(DEVICE_ID);
+    if (!accel_config) return XST_FAILURE;
+
+    // 2. Initialize the driver
+    int status = XConv_accel_CfgInitialize(&accel_dev, accel_config);
+    if (status != XST_SUCCESS) return XST_FAILURE;
+
+    return XST_SUCCESS;
+}
+
+int main() {
+    printf("--- Zynq CNN Hardware Acceleration Test ---\n\r");
+
+    if (init_accelerator() != XST_SUCCESS) {
+        printf("Error: Accelerator Initialization Failed!\n\r");
+        return -1;
+    }
+
+    XTime tStart, tEnd;
+
+    for(int i = 0; i < NUM_TEST_IMAGES; i++) {
+        // Point to the image and weights already in DDR RAM
+        float img_ptr = (float)test_dataset[i];
+        
+        // Note: In a real scenario, you'd load your trained weights here.
+        // For this benchmark, we use the empty static arrays we defined.
+        float weight_ptr = (float)w1; 
+        float bias_ptr = (float)b1;
+
+        // 1. Start Timer
+        XTime_GetTime(&tStart);
+
+        /* --- HARDWARE CONTROL FLOW --- */
+
+        // 2. Set the Addresses (Telling the FPGA where to look in RAM)
+        XConv_accel_Set_img_in(&accel_dev, (UINTPTR)img_ptr);
+        XConv_accel_Set_weights(&accel_dev, (UINTPTR)weight_ptr);
+        XConv_accel_Set_bias(&accel_dev, (UINTPTR)bias_ptr);
+        XConv_accel_Set_img_out(&accel_dev, (UINTPTR)hw_output);
+
+        // 3. Start the Hardware
+        XConv_accel_Start(&accel_dev);
+
+        // 4. Wait for the "Done" signal (Polling)
+        while (!XConv_accel_IsDone(&accel_dev));
+
+        /* ---------------------------- */
+
+        XTime_GetTime(&tEnd);
+
+        double duration_us = (double)(tEnd - tStart) / (COUNTS_PER_SECOND / 1000000.0);
+        printf("Image %d HW Inference Time: %.2f us\n\r", i, duration_us);
+    }
+
+    return 0;
+}
