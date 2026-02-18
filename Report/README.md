@@ -1,31 +1,23 @@
-# Experimental Results and Evaluation
+# Project Report
 
-This directory contains the performance analysis and experimental data collected to evaluate the system. The results quantify the improvements achieved by transitioning from a software-only implementation to a hardware-accelerated design on the Xilinx Zynq SoC.
+This directory contains the final project documentation, providing a comprehensive technical account of the design, implementation, and evaluation of the hardware-accelerated CNN system. The report serves as the formal record of the engineering methodology and performance achieved on the Xilinx Zynq platform.
 
-## Performance Benchmarks
+## Core Documentation
 
-The evaluation focuses on key metrics relevant to embedded inference performance:
+The report is structured to present the complete development process:
 
-### Inference Latency
-Comparative measurements showing the reduction in execution time per frame when using the FPGA accelerator.
+### System Architecture
+A high-level overview of the heterogeneous computing environment, describing the interaction between the ARM Processing System (PS) and the FPGA Programmable Logic (PL).
 
-### System Throughput
-Performance expressed in frames per second (FPS), demonstrating the increase in processing rate compared to CPU-only execution.
+### Hardware–Software Partitioning
+Technical rationale for the distribution of tasks between software and hardware, including identification of CNN operations selected for hardware acceleration.
 
-### Power Efficiency
-Assessment of performance per watt, highlighting the energy advantages of hardware acceleration on a heterogeneous platform.
+### Accelerator Design Methodology
+Documentation of the hardware design approach using High-Level Synthesis, including optimization techniques such as pipelining and loop unrolling to meet performance and timing goals.
 
-## Supporting Data
+### Performance Analysis
+A quantitative comparison between CPU-only execution and FPGA-accelerated inference, supported by measured results and observations.
 
-### Performance Graphs
-Visual comparisons of execution time, speedup, and scaling behavior across different stages of the CNN pipeline.
+## Key Conclusions
 
-### Measurement Logs
-Raw timing data obtained from system timers and hardware performance monitors.
-
-### Summary Reports
-Analytical summaries outlining acceleration factors and trade-offs between resource usage and performance gains.
-
-## Conclusion
-
-The collected results demonstrate that offloading computationally intensive operations to FPGA programmable logic significantly improves real-time processing capability for edge AI workloads.
+The report concludes with an evaluation of the effectiveness of FPGA-based acceleration for edge AI workloads. It discusses the trade-offs between hardware resource utilization, performance gains, and system efficiency, and assesses the extent to which the project meets real-time processing objectives.
