@@ -17,9 +17,6 @@ Assessment of performance per watt, highlighting the energy advantages of hardwa
 
 ## Supporting Data
 
-### Performance Graphs
-Visual comparisons of execution time, speedup, and scaling behavior across different stages of the CNN pipeline.
-
 ### Measurement Logs
 Raw timing data obtained from system timers and hardware performance monitors.
 
