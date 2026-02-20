@@ -10,6 +10,7 @@ The evaluation focuses on key metrics relevant to embedded inference performance
 Comparative measurements showing the reduction in execution time per frame when using the FPGA accelerator.
 
 [`CPU-only latency`](https://github.com/harikrishnadev2006/Zynq-CNN-Hardware-Accelerator/blob/main/Results/ARM_CPU_latency.png)
+[`FPGA_latency`](https://github.com/harikrishnadev2006/Zynq-CNN-Hardware-Accelerator/blob/main/Results/FPGA_latency_estimate.png)
  
 
 ### System Throughput
