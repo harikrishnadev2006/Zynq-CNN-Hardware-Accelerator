@@ -17,6 +17,8 @@ Assessment of performance per watt, highlighting the energy advantages of hardwa
 https://github.com/harikrishnadev2006/Zynq-CNN-Hardware-Accelerator/blob/main/Results/FPGA_power_consumption.jpeg
 
 ### Resource Utilization
+Assessment of resources used such as LUT, Flip Flops and BRAM.
+https://github.com/harikrishnadev2006/Zynq-CNN-Hardware-Accelerator/blob/main/Results/FPGA_resource_utilization.jpeg
 
 ## Conclusion
 
