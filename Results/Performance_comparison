@@ -1,0 +1,4 @@
+| Implementation | Latency (ms) | Throughput (FPS) |
+|----------------|--------------|------------------|
+| CPU            | XX           | XX               |
+| FPGA           | XX           | XX               |
