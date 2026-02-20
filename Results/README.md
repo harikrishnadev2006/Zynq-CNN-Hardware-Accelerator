@@ -9,6 +9,8 @@ The evaluation focuses on key metrics relevant to embedded inference performance
 ### Inference Latency
 Comparative measurements showing the reduction in execution time per frame when using the FPGA accelerator.
 
+ARM-CPU -  
+
 ### System Throughput
 Performance expressed in frames per second (FPS), demonstrating the increase in processing rate compared to CPU-only execution.
 
