@@ -14,12 +14,9 @@ Performance expressed in frames per second (FPS), demonstrating the increase in 
 
 ### Power Efficiency
 Assessment of performance per watt, highlighting the energy advantages of hardware acceleration on a heterogeneous platform.
+https://github.com/harikrishnadev2006/Zynq-CNN-Hardware-Accelerator/blob/main/Results/FPGA_power_consumption.jpeg
 
-## Supporting Data
-
-### Measurement Logs
-Raw timing data obtained from system timers and hardware performance monitors.
-
+### Resource Utilization
 
 ## Conclusion
 
