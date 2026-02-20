@@ -81,4 +81,4 @@ The accelerator-oriented architecture significantly reduces inference latency an
 
 ## Outcome
 
-This project demonstrates the effectiveness of heterogeneous computing for edge AI applications. By offloading intensive workloads to specialized hardware, the system achieves significantly higher efficiency than traditional CPU-only architectures while maintaining real-time capability.
+This project demonstrates the effectiveness of heterogeneous computing for edge AI applications. By offloading intensive workloads to specialized hardware, the system achieves significantly higher efficiency than traditional CPU-only architectures, while maintaining real-time capability.
