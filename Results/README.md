@@ -14,6 +14,7 @@ FPGA    -
 
 ### System Throughput
 Performance expressed in frames per second (FPS), demonstrating the increase in processing rate compared to CPU-only execution.
+[`CPU_only_throughput`](https://github.com/harikrishnadev2006/Zynq-CNN-Hardware-Accelerator/blob/main/Results/ARM_CPU_throughput.png)
 
 ### Power Utilization
 Assessment of performance per watt, highlighting the energy advantages of hardware acceleration on a heterogeneous platform.
