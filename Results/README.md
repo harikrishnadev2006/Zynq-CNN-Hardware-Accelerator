@@ -20,8 +20,6 @@ Assessment of performance per watt, highlighting the energy advantages of hardwa
 ### Measurement Logs
 Raw timing data obtained from system timers and hardware performance monitors.
 
-### Summary Reports
-Analytical summaries outlining acceleration factors and trade-offs between resource usage and performance gains.
 
 ## Conclusion
 
