@@ -1,0 +1,76 @@
+#include <ap_int.h>
+#include <ap_fixed.h>
+
+// Using float for now to match Phase 1 (We will upgrade to Fixed-Point later)
+typedef float data_t;
+
+#define KERNEL_SIZE 3
+#define IN_CH 1
+#define OUT_CH 8
+#define IMG_H 32
+#define IMG_W 32
+
+extern "C" { // Required for Vitis to link this to the hardware system
+    void conv_accel(data_t *img_in, data_t *weights, data_t *bias, data_t *img_out) {
+        // -------------------------------------------------------------------------
+        // PRAGMA SECTION: The "Hardware Blueprints"
+        // -------------------------------------------------------------------------
+        
+        // 1. INTERFACES: Connect these pointers to the physical DDR RAM (AXI Master)
+        #pragma HLS INTERFACE m_axi port=img_in offset=slave depth=1024 bundle=gmem
+        #pragma HLS INTERFACE m_axi port=weights offset=slave depth=72 bundle=gmem
+        #pragma HLS INTERFACE m_axi port=bias offset=slave depth=8 bundle=gmem
+        #pragma HLS INTERFACE m_axi port=img_out offset=slave depth=1024 bundle=gmem
+        
+        // 2. CONTROL: Create a "Control Block" so the CPU can start/stop us (AXI Lite)
+        #pragma HLS INTERFACE s_axilite port=return
+        #pragma HLS INTERFACE s_axilite port=img_in
+        #pragma HLS INTERFACE s_axilite port=weights
+        #pragma HLS INTERFACE s_axilite port=bias
+        #pragma HLS INTERFACE s_axilite port=img_out
+
+        // 3. INTERNAL MEMORY: Build fast "Block RAM" inside the chip
+        data_t buff_in[IMG_H][IMG_W];
+        data_t buff_out[OUT_CH][30][30];
+
+        // -------------------------------------------------------------------------
+        // LOGIC SECTION
+        // -------------------------------------------------------------------------
+
+        // Step A: Load Input from Slow DDR to Fast BRAM (Burst Mode)
+        LOAD_LOOP: for(int i=0; i<IMG_H*IMG_W; i++) {
+            #pragma HLS PIPELINE II=1
+            buff_in[i/IMG_W][i%IMG_W] = img_in[i];
+        }
+
+        // Step B: Compute (The Accelerator)
+        // Note: We fused the loops to make optimization easier
+        COMPUTE_LOOP: 
+        for (int f = 0; f < OUT_CH; f++) {
+            for (int i = 0; i < (IMG_H - KERNEL_SIZE + 1); i++) {
+                for (int j = 0; j < (IMG_W - KERNEL_SIZE + 1); j++) {
+                    #pragma HLS PIPELINE II=1 // <--- THE MAGIC COMMAND
+                    
+                    data_t sum = bias[f];
+                    
+                    for (int ki = 0; ki < KERNEL_SIZE; ki++) {
+                        for (int kj = 0; kj < KERNEL_SIZE; kj++) {
+                            sum += buff_in[i + ki][j + kj] * weights[f*IN_CH*9 + ki*3 + kj];
+                        }
+                    }
+                    // Write to internal buffer first
+                    buff_out[f][i][j] = (sum > 0) ? sum : 0;
+                }
+            }
+        }
+
+        // Step C: Write Output from Fast BRAM back to Slow DDR
+        STORE_LOOP: for(int i=0; i<OUT_CH*30*30; i++) {
+            #pragma HLS PIPELINE II=1
+            int f = i / (30*30);
+            int r = (i % (30*30)) / 30;
+            int c = i % 30;
+            img_out[i] = buff_out[f][r][c];
+        }
+    }
+}
